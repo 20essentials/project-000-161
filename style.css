@@ -1,0 +1,425 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  height: 100dvh;
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center;
+  background-color: #000;
+}
+
+:root {
+  --current-gray: #403a3a;
+}
+
+.cube-viewport {
+  --w: 100dvw;
+  --h: 100dvh;
+  width: var(--w);
+  height: var(--h);
+  transform-style: preserve-3d;
+  perspective: 2000px;
+  position: absolute;
+  overflow: hidden;
+
+  * {
+    position: absolute;
+  }
+
+  .side {
+    width: var(--w);
+    height: var(--h);
+
+  }
+
+  .side:not(.front) {
+    animation: mover 8s linear infinite;
+  }
+
+  .front {
+    background-color: transparent;
+    background-image: none;
+  }
+
+  .behind {
+    background-color: #000;
+    transform: translateZ(calc(-1 * var(--w)));
+    border: 2.5vw solid #000;
+    border-bottom: 7vw solid #000;
+
+
+    @media (width <=1000px) and (orientation: portrait) {
+      height: 95dvh;
+      bottom: 5%;
+      transform: translateZ(calc(-1 * var(--w) - 1800px));
+      z-index: 999;
+    }
+
+
+    .img {
+      width: 100%;
+      height: 100%;
+      background-position: center;
+      transition: background-image .5s ease;
+      background-size: cover;
+      animation: changeImg 50s linear infinite alternate both;
+    }
+  }
+
+  .right {
+    background-color: #ff08;
+    transform-origin: 100% 0;
+    transform: rotateY(-90deg);
+    right: 0;
+    background: repeating-linear-gradient(to right, transparent 0 9%, #000 9.9% 10%) var(--current-gray);
+
+
+
+  }
+
+  .left {
+    background-color: #0f08;
+    transform-origin: 0 0;
+    transform: rotateY(90deg);
+    background: repeating-linear-gradient(to right, transparent 0 9%, #000 9.9% 10%) var(--current-gray);
+    left: 0;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 20%;
+      height: 50%;
+      background-image: url('cortinas.png');
+      background-size: cover;
+      bottom: 0%;
+      left: 20%;
+      -webkit-box-reflect: right;
+
+      @media (width >=3100px) {
+        width: 10%;
+      }
+    }
+  }
+
+  .right,
+  .left {
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      height: 50%;
+      display: block;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background-color: #84847577;
+      z-index: -1;
+    }
+
+    @media (width <=1000px) and (orientation: portrait) {
+      width: 800dvw;
+
+      &::before,
+      &::after {
+        height: 30%;
+      }
+
+    }
+  }
+
+  .top {
+    background-color: #00f8;
+    transform-origin: 50% 0;
+    transform: rotateX(-90deg);
+    background: repeating-linear-gradient(to right, transparent 1% 9%, #000 9% 10%), repeating-linear-gradient(to bottom, transparent 1% 9%, #000 9% 10%) var(--current-gray);
+    height: 100dvw;
+
+    @media (width <=1000px) and (orientation: portrait) {
+      height: 800dvw;
+      left: 0;
+    }
+  }
+
+  .bottom {
+    transform-origin: 0% 100%;
+    width: 100dvw;
+    height: 100dvw;
+    transform: rotateX(90deg);
+    bottom: 0;
+    transform-style: preserve-3d;
+    perspective: 5000px;
+
+    .row {
+      height: 10%;
+      width: 100%;
+      position: absolute;
+      bottom: calc((var(--s) * 5%));
+      transform-style: preserve-3d;
+      perspective: 10000;
+
+
+      @media (width >=300px) and (orientation: landscape) {
+        bottom: calc((var(--s) * -30%));
+
+        &:nth-child(9),
+        &:nth-child(8),
+        &:nth-child(7),
+        &:nth-child(6),
+        &:nth-child(5) {
+          display: none;
+        }
+
+        &:nth-child(4),
+        &:nth-child(3) {
+          display: block;
+        }
+      }
+
+
+      @media (width >=900px) and (orientation: landscape) {
+        bottom: calc((var(--s) * 17.5%));
+
+        &:nth-child(9),
+        &:nth-child(8),
+        &:nth-child(7) {
+          display: none;
+        }
+      }
+
+      @media (width >=1000px) and (orientation: landscape) {
+        bottom: calc((var(--s) * 17%));
+
+        &:nth-child(9),
+        &:nth-child(8) {
+          display: none;
+        }
+
+        &:nth-child(7),
+        &:nth-child(6),
+        &:nth-child(5),
+        &:nth-child(4),
+        &:nth-child(3),
+        &:nth-child(2),
+        &:nth-child(1) {
+          display: block;
+        }
+      }
+
+      @media (width <=1000px) and (orientation: portrait) {
+        bottom: calc((var(--s) * 47%));
+
+        &:nth-child(9),
+        &:nth-child(8),
+        &:nth-child(7),
+        &:nth-child(6),
+        &:nth-child(5),
+        &:nth-child(4),
+        &:nth-child(3),
+        &:nth-child(2),
+        &:nth-child(1) {
+          display: block;
+
+          .sit {
+            height: 120%;
+          }
+        }
+      }
+
+      @media (width >=1500px) {
+        bottom: calc((var(--s) * 17%));
+      }
+
+      @media (width >=1600px) {
+        bottom: calc((var(--s) * 16%));
+      }
+
+      @media (width >=1800px) {
+        bottom: calc((var(--s) * 16%));
+      }
+
+      @media (width >=2000px) {
+        bottom: calc((var(--s) * 15%));
+
+        &:nth-child(9),
+        &:nth-child(8),
+        &:nth-child(7),
+        &:nth-child(6),
+        &:nth-child(5),
+        &:nth-child(4),
+        &:nth-child(3),
+        &:nth-child(2),
+        &:nth-child(1) {
+          display: block;
+        }
+      }
+
+      @media (width >=2300px) {
+        bottom: calc((var(--s) * 10%));
+      }
+
+      @media (width >=3000px) {
+        bottom: calc((var(--s) * 7%));
+      }
+
+      @media (width >=4000px) {
+        bottom: calc((var(--s) * 6%));
+      }
+
+
+    }
+
+    .sit {
+      width: 8%;
+      height: 100%;
+      background-color: #111;
+      transform-origin: 50% 0;
+      position: absolute;
+      top: 150%;
+
+      left: 50%;
+      border-radius: 0 0 50px 50px;
+      box-shadow: 0 .5vw 0 0 #dc1313,
+        0 0 0 1px #fff2,
+        0 0 0 2px #fff2,
+        0 0 0 3px #fff2;
+
+      @media (width >=200px) {
+        top: 0%;
+        transform: translate(-50%, -50%) rotateX(50deg);
+      }
+
+      @media (width >=900px) {
+        top: 280%;
+        transform: translate(-50%, -50%) rotateX(30deg);
+      }
+
+      @media (width >=1000px) {
+        top: 320%;
+        transform: translate(-50%, -50%) rotateX(45deg);
+      }
+
+      @media (width >=1500px) {
+        top: 250%;
+        transform: translate(-50%, -50%) rotateX(55deg);
+      }
+
+      @media (width >=1600px) {
+        top: 240%;
+        transform: translate(-50%, -50%) rotateX(65deg);
+      }
+
+      @media (width >=1800px) {
+        top: 230%;
+        transform: translate(-50%, -50%) rotateX(70deg);
+      }
+
+      @media (width >=2000px) {
+        top: 220%;
+        transform: translate(-50%, -50%) rotateX(80deg);
+      }
+
+      @media (width >=2300px) {
+        top: 200%;
+        transform: translate(-50%, -50%) rotateX(90deg);
+      }
+
+      @media (width >=3000px) {
+        top: 180%;
+        transform: translate(-50%, -50%) rotateX(110deg);
+      }
+
+      @media (width >=4600px) {
+        top: 170%;
+        transform: translate(-50%, -50%) rotateX(120deg);
+      }
+
+      &:nth-child(2) {
+        left: 60%;
+      }
+
+      &:nth-child(3) {
+        left: 70%;
+      }
+
+      &:nth-child(4) {
+        left: 80%;
+      }
+
+      &:nth-child(5) {
+        left: 90%;
+      }
+
+      &:nth-child(6) {
+        left: 40%;
+      }
+
+      &:nth-child(7) {
+        left: 30%;
+      }
+
+      &:nth-child(8) {
+        left: 20%;
+      }
+
+      &:nth-child(9) {
+        left: 10%;
+      }
+    }
+
+    @media (width <=1000px) and (orientation: portrait) {
+      bottom: -5dvh;
+    }
+  }
+}
+
+@keyframes changeImg {
+  0% {
+    background-image: url('assets/n1.webp');
+  }
+
+  20% {
+    background-image: url('assets/n2.webp');
+  }
+
+  40% {
+    background-image: url('assets/n3.webp');
+  }
+
+  60% {
+    background-image: url('assets/n4.webp');
+  }
+
+  80% {
+    background-image: url('assets/n5.webp');
+  }
+
+  100% {
+    background-image: url('assets/n1.webp');
+  }
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
